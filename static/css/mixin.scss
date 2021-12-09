@@ -1,0 +1,465 @@
+//px 转 rem
+@function pxTorem($px) {
+  @return $px / 75px *1rem;
+}
+
+@function pxToremBase($px) { //$px为需要转换的字号
+  @return $px / $browser-default-font-size * 1rem;
+}
+
+//计算2倍设计稿rem值
+@function pxToremBase2x($px) {
+  @return $px/2/ $browser-default-font-size * 1rem;
+}
+
+@mixin clearBg() {
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+@mixin autoBgImg() {
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+@mixin bgImg($url) {
+  background-image: url($url + "_s.png");
+  @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+    background-image: url($url + ".png");
+  }
+}
+
+@mixin bannerImg($url) {
+  background-image: url($url + "200.jpg");
+  @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+    background-image: url($url + "300.jpg");
+  }
+}
+
+@mixin bg2TimesAnd3TimesConvert($url) {
+  background-image: url($url + "2x.png");
+  @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+    background-image: url($url + "3x.png");
+  }
+}
+
+@mixin icon($size:27px) {
+  width: $size;
+  height: $size;
+  background-size: 100%;
+}
+
+@mixin listContent($minWidth:65px ,$titlePaddingRight:28px ,$itemMargin: 8px) {
+  .content {
+    font-size: pxToremBase(15px);
+    padding: 0px 16px 12px 16px;
+    border-bottom: 1px solid $line-color;
+
+    .item {
+      list-style: none;
+      @include flex();
+      margin: $itemMargin 0;
+      line-height: 20px;
+
+      .title {
+        display: inline-block;
+        padding: 0 $titlePaddingRight 0 0;
+        min-width: $minWidth;
+        color: $text-title-color;
+      }
+
+      .one-line-ellipsis {
+        @include onelineEllipsis
+      }
+
+      .detail {
+        flex: 1;
+      }
+    }
+  }
+}
+
+//单行文本溢出
+@mixin onelineEllipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+//单行文本溢出自动换行
+@mixin onelineBr {
+  word-break: break-all;
+}
+
+//多行文本溢出
+@mixin morelineEllipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  @include onelineBr
+}
+
+//1px border  处理
+@mixin border-1px($color: $line-color,$direction:bottom) {
+  position: relative;
+  &:after {
+    display: block;
+    position: absolute;
+    left: 0;
+    @if $direction == bottom {
+      bottom: 0;
+    } @else {
+      top: 0;
+    }
+    width: 100%;
+    border-top: 1px solid $color;
+    content: '';
+  }
+  @media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+    &::after {
+      -webkit-transform: scaleY(0.7);
+      transform: scaleY(0.7)
+    }
+  }
+
+  @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+    &::after {
+      -webkit-transform: scaleY(0.5);
+      transform: scaleY(0.5)
+    }
+  }
+}
+
+@mixin padding-right-to-half($px :30px) {
+  padding-right: $px;
+  @media screen and (max-width: 320px) {
+    padding-right: ($px/3)
+  }
+}
+
+//1px border  处理
+@mixin radius-left($px: 10px) {
+  border-top-right-radius: $px;
+  border-bottom-right-radius: $px;
+}
+
+//动画
+@mixin animateFadeIn($time: 1s) {
+  .list-enter-active {
+    transform-origin: left center;
+    animation: fadeInRight $time;
+  }
+
+  .list-leave-active {
+    transform-origin: left center;
+    animation: fadeInLeft $time reverse;
+  }
+
+  .list-enter, .list-leave-to {
+    opacity: 0;
+  }
+}
+
+//默认文本样式
+@mixin placeholder($color: $placeholder-color) {
+  .placeholder {
+    color: $color;
+    font-weight: normal;
+  }
+  .vux-cell-placeholder {
+    color: $color !important;
+    font-weight: normal;
+  }
+  ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color: $color;
+    font-weight: normal;
+  }
+
+  :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: $color;
+    font-weight: normal;
+  }
+  ::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: $color;
+    font-weight: normal;
+  }
+  :-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: $color;
+    font-weight: normal;
+  }
+}
+
+@mixin backSize($width,$height) {
+  background-size: 100%;
+  width: $width+px;
+  height: $height+px;
+}
+
+@mixin rightBtn() {
+  .my-btn {
+    float: right;
+    width: 90px;
+    border-radius: 99px !important;
+    border-color: $line-color !important;
+    color: $duck-color !important;
+    font-size: 13px;
+    line-height: 2;
+
+    &:active {
+      border-color: $line-color !important;
+      color: $duck-color !important;
+      background-color: transparent;
+    }
+  }
+}
+
+@mixin submitBtn() {
+  .submit-btn {
+    margin-top: 30px;
+    padding: 0 20px 0 20px;
+
+    button {
+      background: $mainColor !important;
+    }
+
+    .weui-btn_disabled.weui-btn_primary {
+      background: $btn-disabled-bg-color !important;
+      border-color: $btn-disabled-bg-color !important;
+    }
+
+    .weui-btn_primary:not(.weui-btn_disabled):active {
+      background: $mainColor !important;
+      border-color: #d4e5f7 !important;
+    }
+
+    .weui-btn {
+      border-radius: 3px !important;
+    }
+
+    .weui-btn:after {
+      border: none !important;
+    }
+  }
+}
+
+@mixin submitBtnForWhite($bgColor: #FFF) {
+  .submit-reject {
+    margin-top: 50px;
+    padding: 0 20px 0 20px;
+
+    button {
+      background: $bgColor;
+    }
+
+    .weui-btn_disabled.weui-btn_primary {
+      background: $bgColor;
+      border-color: #d4e5f7;
+    }
+  }
+}
+
+@mixin btnFooter() {
+  .btn-footer {
+    .weui-tabbar {
+      //position: absolute;
+      background: $main-back-color;
+
+      &:before {
+        border-top-color: $lineBtnColor;
+      }
+
+      a {
+        &:first-child {
+          border-right: 1px $lineBtnColor solid;
+        }
+
+        color: $main-back-color;
+      }
+
+      span {
+        color: $mainColor;
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+//行内元素变成块状元素
+@mixin block-element() {
+  display: inline-block;
+  width: 100%;
+}
+
+//输入框 input $placeholder-color
+@mixin placeholder-input-color() {
+  .placeholder {
+    color: $placeholder-color;
+    font-weight: normal;
+  }
+  .vux-cell-placeholder {
+    color: $placeholder-color !important;
+    font-weight: normal;
+  }
+  ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color: $placeholder-color !important;
+    font-weight: normal;
+  }
+
+  :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: $placeholder-color !important;
+    font-weight: normal;
+  }
+  ::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: $placeholder-color !important;
+    font-weight: normal;
+  }
+  :-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: $placeholder-color !important;
+    font-weight: normal;
+  }
+}
+
+//输入框 label 值 样式
+@mixin input-label() {
+  .vux-label {
+    color: $subtitle-color;
+  }
+  .weui-label {
+    color: $subtitle-color;
+  }
+  .weui-input {
+    color: $title-color;
+  }
+  .vux-cell-align-left {
+    color: $title-color;
+  }
+  .vux-datetime {
+    color: $subtitle-color;
+  }
+  .vux-cell-value {
+    color: $title-color;
+  }
+  .vux-label {
+    color: $subtitle-color;
+  }
+  .weui-cell__ft {
+    color: $title-color;
+  }
+}
+
+//group 下cell的颜色值 针对 与 textArea时一起用
+@mixin textarea-group {
+  .textarea-group {
+    .weui-cell__ft {
+      color: $placeholder-color;
+    }
+  }
+}
+
+//去掉 switch 与textArea时 下划线样式
+
+@mixin bottom-reset {
+  .bottom-reset {
+    .vux-x-textarea {
+      &:before {
+        border-top: none !important;
+      }
+    }
+  }
+}
+
+@mixin deletePeopleButton() {
+  .delete-people {
+    margin: 30px 16px;
+    text-align: center;
+    color: red;
+    font-size: 14px;
+
+    .weui-btn {
+      border-radius: 0;
+    }
+
+    .weui-btn:after {
+      border: none !important;
+    }
+
+    .weui-btn_default {
+      background: $main-back-color;
+      color: $danger-color;
+    }
+  }
+}
+
+@mixin clearfix() {
+  &:after {
+    display: block;
+    content: ".";
+    height: 0;
+    line-height: 0;
+    clear: both;
+    visibility: hidden;
+  }
+}
+
+@mixin flex() {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+@mixin flexV {
+  -webkit-box-orient: vertical;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+@mixin flex-1 {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+@mixin flexAlignCenter {
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+@mixin flexPackCenter {
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+@mixin flexPackJustify {
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+@mixin doctorAvatar($size:50px) {
+  display: inline-block;
+  width: $size;
+  height: $size;
+  /*background-repeat: no-repeat;*/
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  border-radius: 50%;
+  outline: none;
+}
+
+@mixin fontWeight() {
+  font-weight: bold !important;
+  @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+    font-weight: bold !important;
+  }
+}

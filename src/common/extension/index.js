@@ -1,0 +1,11 @@
+import './Object'
+import './EventTarget'
+import './Element'
+import './Window'
+import './Storage'
+import './JSON'
+import './String'
+// import './VueRouter'
+
+import './Vue'
+import './Vuex'
